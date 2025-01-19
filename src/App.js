@@ -1,7 +1,9 @@
 import './App.css';
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SearchBar from './components/Searchbar';
 import MovieList from './components/MovieList';
+import MovieDetails from './components/MovieDetails';
 import { fetchMovies } from './api';
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
     if (data && data.results) {
       setMovies(data.results);
       setTotalPages(data.total_pages);
-      setPage(1); 
+      setPage(1);
     } else {
       setMovies([]);
     }
@@ -29,7 +31,7 @@ function App() {
       const data = await fetchMovies(query, nextPage);
       if (data && data.results) {
         setMovies((prevMovies) => [...prevMovies, ...data.results]);
-        setPage(nextPage); 
+        setPage(nextPage);
       }
     }
   };
@@ -37,16 +39,24 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{ padding: '20px' }}>
-        <h1>Movie Search</h1>
-        <SearchBar onSearch={handleSearch} />
-        <MovieList movies={movies} />
-        {page < totalPages && (
-          <button onClick={loadMore} style={{ marginTop: '20px' }}>
-            Load More
-          </button>
-        )}
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={
+              <div style={{ padding: '20px' }}>
+                <h1>Movie Search App</h1>
+                <SearchBar onSearch={handleSearch} />
+                <MovieList movies={movies} />
+                {page < totalPages && (
+                  <button onClick={loadMore} style={{ marginTop: '20px' }}>
+                    Load More
+                  </button>
+                )}
+              </div>
+            }
+          />
+          <Route path="/movie/:id" element={<MovieDetails />} />
+        </Routes>
+      </Router>
     </div>
   );
 }

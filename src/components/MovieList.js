@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import placeholderImage from '../assets/placeholder.jpg';
 
 const MovieList = ({ movies }) => {
     if (!movies || movies.length === 0) {
@@ -17,13 +19,19 @@ const MovieList = ({ movies }) => {
                         width: '200px',
                     }}
                 >
-                    <img
-                        src={movie.poster_path !== 'N/A' ? 'https://image.tmdb.org/t/p/w500/' + movie.poster_path : 'https://via.placeholder.com/150'}
-                        alt={movie.title}
-                        style={{ width: '100%', height: '300px', objectFit: 'cover' }}
-                    />
-                    <h3 style={{ fontSize: '16px' }}>{movie.title}</h3>
-                    <p>{movie.release_date}</p>
+                    <Link to={`/movie/${movie.id}`}>
+                        <img
+                            src={
+                                movie.poster_path
+                                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                                    : placeholderImage
+                            }
+                            alt={movie.title}
+                            style={{ width: '100%', height: '300px', objectFit: 'cover' }}
+                        />
+                        <h3 style={{ fontSize: '16px' }}>{movie.title}</h3>
+                    </Link>
+                    <p>{movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
                 </div>
             ))}
         </div>

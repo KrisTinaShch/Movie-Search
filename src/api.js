@@ -3,7 +3,7 @@ const API_KEY = process.env.REACT_APP_MOVIE_API_KEY;
 
 export const fetchMovies = async (query, page = 1) => {
   try {
-    const response   = await fetch(
+    const response  = await fetch(
       `${API_URL}/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`
     );
     if (!response.ok) {
@@ -17,3 +17,16 @@ export const fetchMovies = async (query, page = 1) => {
   }
 };
 
+export const fetchMovieDetails = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/movie/${id}?api_key=${API_KEY}`);
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+    throw error;
+  }
+};
