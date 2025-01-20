@@ -1,10 +1,12 @@
 import './App.css';
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SearchBar from './components/Searchbar';
 import MovieList from './components/MovieList';
 import MovieDetails from './components/MovieDetails';
+import FavoritesPage from './components/FavoritesPage';
 import { fetchMovies } from './api';
+import { FavoritesProvider } from './context/FavoritesContext';
 
 function App() {
 
@@ -36,12 +38,16 @@ function App() {
     }
   };
 
-
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={
+    <FavoritesProvider>
+      <div className="App">
+        <Router>
+          <nav style={{ padding: '10px' }}>
+            <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
+            <Link to="/favorites">Favorites</Link>
+          </nav>
+          <Routes>
+            <Route path="/" element={
               <div style={{ padding: '20px' }}>
                 <h1>Movie Search App</h1>
                 <SearchBar onSearch={handleSearch} />
@@ -52,12 +58,13 @@ function App() {
                   </button>
                 )}
               </div>
-            }
-          />
-          <Route path="/movie/:id" element={<MovieDetails />} />
-        </Routes>
-      </Router>
-    </div>
+            } />
+            <Route path="/movie/:id" element={<MovieDetails />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+          </Routes>
+        </Router>
+      </div>
+    </FavoritesProvider>
   );
 }
 
