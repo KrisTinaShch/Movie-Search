@@ -6,25 +6,23 @@ const SearchBar = ({ onSearch }) => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (query.trim()) {
-            onSearch(query); 
+            onSearch(query);
         }
     };
 
     return (
-        <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch} className="flex space-x-2 mb-6">
             <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for movies..."
-                style={{
-                    padding: '10px',
-                    width: '300px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc',
-                }}
+                className="flex-grow px-4 py-2 border border-gray-300 rounded shadow-sm focus:ring focus:ring-blue-300"
             />
-            <button type="submit" style={{ padding: '10px', marginLeft: '10px' }}>
+            <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+            >
                 Search
             </button>
         </form>

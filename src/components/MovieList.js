@@ -9,19 +9,15 @@ const MovieList = ({ movies }) => {
     const isFavorite = (movieId) => favorites.some((fav) => fav.id === movieId);
 
     if (!movies || movies.length === 0) {
-        return <p>No movies found.</p>;
+        return <p className="text-gray-600">No movies found.</p>;
     }
+
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {movies.map((movie) => (
                 <div
                     key={movie.id}
-                    style={{
-                        border: '1px solid #ccc',
-                        padding: '10px',
-                        borderRadius: '4px',
-                        width: '200px',
-                    }}
+                    className="border rounded shadow-md overflow-hidden flex flex-col"
                 >
                     <Link to={`/movie/${movie.id}`}>
                         <img
@@ -31,26 +27,24 @@ const MovieList = ({ movies }) => {
                                     : placeholderImage
                             }
                             alt={movie.title}
-                            style={{ width: '100%', height: '300px', objectFit: 'cover' }}
+                            className="w-full h-60 object-cover"
                         />
-                        <h3 style={{ fontSize: '16px' }}>{movie.title}</h3>
                     </Link>
-                    <p>{movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
+                    <div className="p-4 flex-grow">
+                        <h3 className="text-lg font-semibold mb-2">{movie.title}</h3>
+                        <p className="text-sm text-gray-500">
+                            {movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}
+                        </p>
+                    </div>
                     <button
                         onClick={() =>
                             isFavorite(movie.id) ? removeFavorite(movie.id) : addFavorite(movie)
                         }
-                        style={{
-                            marginTop: '10px',
-                            backgroundColor: isFavorite(movie.id) ? 'red' : 'green',
-                            color: 'white',
-                            border: 'none',
-                            padding: '10px',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                        }}
+                        className={`w-full py-2 text-white ${
+                            isFavorite(movie.id) ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+                        }`}
                     >
-                        {isFavorite(movie.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                        {isFavorite(movie.id) ? 'Remove' : 'Add'}
                     </button>
                 </div>
             ))}

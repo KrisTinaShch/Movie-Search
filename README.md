@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+# Movie Search App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive web application built with React that allows users to search for movies, view detailed information about them, and save their favorite movies.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Search movies by title**: Search and display movies using the TMDB API.
+- **Movie details**: View detailed information about a movie, including its title, plot, release date, and more.
+- **Favorites management**: Add movies to a favorites list, which persists across page reloads using `localStorage`.
+- **Responsive design**: Optimized for mobile and desktop devices.
 
-### `npm start`
+## Instructions on How to Run the Project Locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Follow these steps to set up and run the project locally on your machine:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Clone the Repository
+Clone the repository from GitHub to your local machine:
+``bash
+git clone <repository-url>
+ 
+### 2. Navigate to the Project Folder
 
-### `npm test`
+Move into the project directory:
+``bash
+cd <project-folder>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Install Dependencies
+Install all necessary packages:
+``bash
+npm install
 
-### `npm run build`
+### 4. Set Up Environment Variables
+Create a .env file in the root directory and add your TMDB API key:
+``bash
+REACT_APP_MOVIE_API_KEY=your_tmdb_api_key
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 5. Start the Development Server
+Start the application in development mode:
+``bash
+npm start
+Open your browser and navigate to:
+``bash
+http://localhost:3000
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Assumptions and Decisions Made During Development
+1. **API Integration**: Used TMDB API to fetch movie data due to its comprehensive dataset and free tier availability.
+2. **State Management**: Implemented React's Context API for managing the favorites list.
+3. **Styling**: Tailwind CSS was chosen for its utility-first approach, enabling fast and responsive styling.
+4. **Persistence**: Favorites are stored in localStorage to ensure data is retained across sessions.
+5. **Error Handling**: Handled API errors and empty states gracefully with user-friendly messages.
 
-### `npm run eject`
+## Technologies Used
+- **React**: For building user interfaces.
+- **Tailwind CSS**: For responsive and modern styling.
+- **React Router**: For navigation and routing between pages.
+- **TMDB API**: For fetching movie data.
+- **localStorage**: For persisting user's favorite movies.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Project Structure
+The project is structured as follows:
+```text
+src/
+├── components/       # Reusable UI components
+│   ├── SearchBar.js      # Search input component
+│   ├── MovieList.js      # Component for displaying the list of movies
+│   ├── MovieDetails.js   # Component for displaying movie details
+│   ├── FavoritesPage.js  # Component for managing and viewing favorite movies
+├── context/          # React Context for state management
+│   └── FavoritesContext.js
+├── api.js            # API helper functions for TMDB
+├── App.js            # Main application logic
+├── index.css         # Global styles including Tailwind setup
+├── index.js          # Entry point for the application
+└── assets/           # Static assets (e.g., placeholder images)

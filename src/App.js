@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SearchBar from './components/Searchbar';
@@ -9,63 +8,72 @@ import { fetchMovies } from './api';
 import { FavoritesProvider } from './context/FavoritesContext';
 
 function App() {
+    const [movies, setMovies] = useState([]);
+    const [query, setQuery] = useState('');
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-  const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+    const handleSearch = async (searchQuery) => {
+        setQuery(searchQuery);
+        const data = await fetchMovies(searchQuery, 1);
+        if (data && data.results) {
+            setMovies(data.results);
+            setTotalPages(data.total_pages);
+            setPage(1);
+        } else {
+            setMovies([]);
+        }
+    };
 
-  const handleSearch = async (searchQuery) => {
-    setQuery(searchQuery);
-    const data = await fetchMovies(searchQuery, 1);
-    if (data && data.results) {
-      setMovies(data.results);
-      setTotalPages(data.total_pages);
-      setPage(1);
-    } else {
-      setMovies([]);
-    }
-  };
+    const loadMore = async () => {
+        if (page < totalPages) {
+            const nextPage = page + 1;
+            const data = await fetchMovies(query, nextPage);
+            if (data && data.results) {
+                setMovies((prevMovies) => [...prevMovies, ...data.results]);
+                setPage(nextPage);
+            }
+        }
+    };
 
-  const loadMore = async () => {
-    if (page < totalPages) {
-      const nextPage = page + 1;
-      const data = await fetchMovies(query, nextPage);
-      if (data && data.results) {
-        setMovies((prevMovies) => [...prevMovies, ...data.results]);
-        setPage(nextPage);
-      }
-    }
-  };
-
-  return (
-    <FavoritesProvider>
-      <div className="App">
-        <Router>
-          <nav style={{ padding: '10px' }}>
-            <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
-            <Link to="/favorites">Favorites</Link>
-          </nav>
-          <Routes>
-            <Route path="/" element={
-              <div style={{ padding: '20px' }}>
-                <h1>Movie Search App</h1>
-                <SearchBar onSearch={handleSearch} />
-                <MovieList movies={movies} />
-                {page < totalPages && (
-                  <button onClick={loadMore} style={{ marginTop: '20px' }}>
-                    Load More
-                  </button>
-                )}
-              </div>
-            } />
-            <Route path="/movie/:id" element={<MovieDetails />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-          </Routes>
-        </Router>
-      </div>
-    </FavoritesProvider>
-  );
+    return (
+        <FavoritesProvider>
+            <Router>
+                <header className="bg-gray-800 text-white py-4">
+                    <div className="container mx-auto flex justify-between items-center px-4">
+                        <h1 className="text-xl font-bold">Movie Search App</h1>
+                        <nav className="space-x-4">
+                            <Link to="/" className="hover:underline">Home</Link>
+                            <Link to="/favorites" className="hover:underline">Favorites</Link>
+                        </nav>
+                    </div>
+                </header>
+                <main className="container mx-auto px-4 py-6">
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <SearchBar onSearch={handleSearch} />
+                                    <MovieList movies={movies} />
+                                    {page < totalPages && (
+                                        <button
+                                            onClick={loadMore}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+                                        >
+                                            Load More
+                                        </button>
+                                    )}
+                                </>
+                            }
+                        />
+                        <Route path="/movie/:id" element={<MovieDetails />} />
+                        <Route path="/favorites" element={<FavoritesPage />} />
+                    </Routes>
+                </main>
+            </Router>
+        </FavoritesProvider>
+    );
 }
 
 export default App;
