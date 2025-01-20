@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieDetails } from '../api';
+import { useFavorites } from '../context/FavoritesContext'; 
 import placeholderImage from '../assets/placeholder.jpg';
 
 const MovieDetails = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const { favorites, addFavorite, removeFavorite } = useFavorites();
 
     useEffect(() => {
         const getMovieDetails = async () => {
@@ -27,6 +30,8 @@ const MovieDetails = () => {
         return <p className="text-center text-red-500">Movie not found.</p>;
     }
 
+    const isFavorite = favorites.some((fav) => fav.id === movie.id);
+
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
             <img
@@ -45,6 +50,18 @@ const MovieDetails = () => {
             <p className="text-gray-700">
                 <strong>Overview:</strong> {movie.overview || 'No description available.'}
             </p>
+
+            {}
+            <button
+                onClick={() =>
+                    isFavorite ? removeFavorite(movie.id) : addFavorite(movie)
+                }
+                className={`mt-4 px-4 py-2 rounded text-white ${
+                    isFavorite ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+                }`}
+            >
+                {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            </button>
         </div>
     );
 };
